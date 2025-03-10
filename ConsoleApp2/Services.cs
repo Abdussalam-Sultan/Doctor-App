@@ -17,7 +17,7 @@ namespace ConsoleApp2
             else
             {
 
-                return (list.ElementAt(id - 1));
+                return list.FirstOrDefault(item => list.IndexOf(item) +1 == id);
             }
         }
         public static void TextColor(ConsoleColor color, string text)

@@ -33,7 +33,8 @@ namespace ConsoleApp2
         {
             Patient patient = new Patient();
             patient.Id = counter++;
-            Console.WriteLine($"* shows which information is necessary\nId: {patient.Id}");
+            Services.TextColor(color: ConsoleColor.Cyan, $"* shows which information is necessary");
+             Console.WriteLine($"Id: {patient.Id}");
             Console.Write("*Name: ");
             patient.Name = Console.ReadLine();
             Console.Write("*Age: ");
@@ -50,16 +51,16 @@ namespace ConsoleApp2
                     default: patient.Gender = Gender.Unspecified; break;
                 }
                 PatientList.Add(patient);
-                Console.WriteLine("\nPatient added successfully!");
+                Services.TextColor(color: ConsoleColor.Green,"\nPatient added successfully!");
             }
-            else {Services.TextColor(ConsoleColor.Red, "Age must be a number");}
+            else {Services.TextColor(ConsoleColor.Red, "Age must be a number");counter--; }
 
         }
         public static void ViewPatient()
         {
             if( PatientList.Count == 0 )
             {
-                Console.WriteLine("No patient recorded!");
+                Services.TextColor(color: ConsoleColor.Cyan,"No patient recorded!");
             }
             foreach (Patient patient in PatientList) {
                 Console.WriteLine($"Id:[{patient.Id}] Name:[{patient.Name}] Age:[{patient.Age}]");
@@ -76,29 +77,38 @@ namespace ConsoleApp2
                     Console.WriteLine($"Id:[{patient.Id}] Name:[{patient.Name}] Age:[{patient.Age}] Gender:[{patient.Gender}]");
                 }
                 else { Console.WriteLine($"Patient with ID[{id}] not found!"); }
-            }else { Console.WriteLine("ID must be a number"); };
+            }else { Services.TextColor(color: ConsoleColor.Red, "ID must be a number"); };
         }
         public static void UpdatePatient()
         {
             Console.Write("Id: ");
-            int id = int.Parse(Console.ReadLine());
-            Patient patient = Services.GetById(id, PatientList);
-            if (patient == default)
+            if(int.TryParse(Console.ReadLine(), out int id))
             {
-               Console.WriteLine("Patient not found");
-            }
-            Console.Write($"Old Name: {patient.Name}\nNew name: ");
-            patient.Name = Console.ReadLine();
-            Console.WriteLine($"Patient {patient.Id} name updated to [{patient.Name}]");
+                Patient patient = Services.GetById(id, PatientList);
+                if (patient == default)
+                {
+                    Console.WriteLine($"Patient with ID [{id}] not found");
+                }
+                Console.Write($"Old Name: {patient.Name}\nNew name: ");
+                patient.Name = Console.ReadLine();
+                Console.WriteLine($"Patient {patient.Id} name updated to [{patient.Name}]");
+            }else { Services.TextColor(color: ConsoleColor.Red, "ID must be a number"); }
         }
         public static void DeletePatient()
         {
             Console.Write("Id: ");
-            int id = int.Parse(Console.ReadLine());
-            Patient patient = Services.GetById(id, PatientList);
-            Console.WriteLine($"Deleted patient [{patient.Id}]");
-            PatientList.Remove(patient);
-            
+            if(int.TryParse(Console.ReadLine(), out int id))
+            {
+                Patient patient = Services.GetById(id, PatientList);
+                if (patient == default)
+                {
+                    Console.WriteLine($"Patient with ID [{id}] not found");
+                }
+                else {
+                    Console.WriteLine($"Deleted patient [{patient.Id}]");
+                    PatientList.Remove(patient);
+                }
+            }else { Services.TextColor(color: ConsoleColor.Red, "ID must be a number"); }
         }
     }
 }
