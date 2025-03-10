@@ -27,6 +27,7 @@ namespace ConsoleApp2
         string Contact { get; set; }
 
         public static List<Patient> PatientList = new List<Patient>();
+        public static List<Appointment> AppointmentList = Appointment.AppointmentList;
         static int counter = 1;
 
         public static void AddPatient()
@@ -37,6 +38,7 @@ namespace ConsoleApp2
              Console.WriteLine($"Id: {patient.Id}");
             Console.Write("*Name: ");
             patient.Name = Console.ReadLine();
+            if(patient.Name == "") { Console.WriteLine("Please enter the patient's name"); }
             Console.Write("*Age: ");
             int age;
             if(int.TryParse(Console.ReadLine(), out age))
